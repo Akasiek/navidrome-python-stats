@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "navidrome-stats"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "httpx",
+    "pydantic-settings",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/navidrome_client"]
+
+[tool.uvicorn]
+app = "main:app"
+app-dir = "src"
+reload = true
+
