@@ -5,13 +5,13 @@
 ### Setup
 
 ```bash
-# 1. Utwórz i aktywuj venv
+# 1. Create and activate virtual environment
 python -m venv .venv && source .venv/bin/activate
 
-# 2. Zainstaluj zależności
+# 2. Install dependencies
 pip install -e .
 
-# 3. Skopiuj .env.example i uzupełnij dane
+# 3. Copy example environment variables and fill in the values
 cp .env.example .env
 ```
 
@@ -26,3 +26,18 @@ uvicorn main:app --app-dir src --reload
 - `NAVIDROME_URL`
 - `NAVIDROME_USER`
 - `NAVIDROME_PASSWORD`
+
+## Vue
+
+## Setup
+
+```bash
+# Install dependencies
+bun install
+```
+
+### Development
+
+```bash
+bun dev
+```
