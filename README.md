@@ -1,6 +1,8 @@
 # Navidrome Python Statistics
 
-## Setup
+## Python
+
+### Setup
 
 ```bash
 # 1. Utwórz i aktywuj venv
@@ -13,16 +15,14 @@ pip install -e .
 cp .env.example .env
 ```
 
-## Uruchamianie
+### Development
 
 ```bash
 uvicorn main:app --app-dir src --reload
 ```
 
-## Zmienne środowiskowe (`.env`)
+### Environment Variables
 
-| Zmienna              | Opis               |
-|----------------------|--------------------|
-| `NAVIDROME_URL`      | Adres serwera      |
-| `NAVIDROME_USER`     | Login              |
-| `NAVIDROME_PASSWORD` | Hasło              |
+- `NAVIDROME_URL`
+- `NAVIDROME_USER`
+- `NAVIDROME_PASSWORD`
