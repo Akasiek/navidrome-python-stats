@@ -21,7 +21,7 @@ class Album(BaseModel):
     play_count: int = Field(0)
     starred: str | None = None  # ISO-8601 timestamp, present when album is starred
     genre: str | None = None
-    rating: int | None = None
+    rating: int | None = Field(None, alias="userRating")
 
     model_config = {"populate_by_name": True, "alias_generator": to_camel}
 
