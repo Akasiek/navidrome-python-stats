@@ -34,16 +34,14 @@ class NavidromeClient:
         await self.close()
 
     def build_navidrome_url(self, endpoint: str, is_rest: bool = True, extra_params: dict[str, Any] | None = None) -> str:
-        if is_rest:
-            params = build_auth_params(self.config)
-        else:
-            params = {}
+        params = build_auth_params(self.config) if is_rest else {}
         if extra_params:
             params.update(extra_params)
+
         url = self.config.url.rstrip("/") + ("/rest" if is_rest else "/app/#")
         url = f"{url}/{endpoint}"
-        if extra_params:
-            url += f"?{urlencode(extra_params)}"
+        if params:
+            url += "?" + urlencode(params)
         return url
 
     async def request(
