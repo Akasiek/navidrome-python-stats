@@ -1,8 +1,7 @@
 from contextlib import asynccontextmanager
-
 from fastapi import FastAPI
-
-from navidrome_client import NavidromeService, get_settings
+from navidrome_client.config import get_settings
+from navidrome_client.service import NavidromeService
 
 
 @asynccontextmanager

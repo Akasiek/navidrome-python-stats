@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import Any
+from urllib.parse import urlencode
 
 import httpx
 
@@ -32,10 +33,23 @@ class NavidromeClient:
     async def __aexit__(self, *_: Any) -> None:
         await self.close()
 
+    def build_navidrome_url(self, endpoint: str, is_rest: bool = True, extra_params: dict[str, Any] | None = None) -> str:
+        if is_rest:
+            params = build_auth_params(self.config)
+        else:
+            params = {}
+        if extra_params:
+            params.update(extra_params)
+        url = self.config.url.rstrip("/") + ("/rest" if is_rest else "/app/#")
+        url = f"{url}/{endpoint}"
+        if extra_params:
+            url += f"?{urlencode(extra_params)}"
+        return url
+
     async def request(
-            self,
-            method_name: str,
-            extra_params: dict[str, Any] | None = None,
+        self,
+        method_name: str,
+        extra_params: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         if self.http is None:
             raise RuntimeError("NavidromeClient is not open")

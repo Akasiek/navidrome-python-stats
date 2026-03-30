@@ -4,7 +4,9 @@ from typing import Literal
 
 from .client import NavidromeClient
 from .config import NavidromeConfig
-from .models import Album, Artist, Song
+from web_server.models.album import Album
+from web_server.models.artist import Artist
+from web_server.models.song import Song
 
 AlbumListType = Literal[
     "random",
