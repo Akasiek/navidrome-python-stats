@@ -14,10 +14,9 @@ dependencies = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/navidrome_client"]
+packages = ["navidrome_client", "web_server"]
 
 [tool.uvicorn]
 app = "main:app"
-app-dir = "src"
 reload = true
 

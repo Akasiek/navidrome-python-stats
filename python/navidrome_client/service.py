@@ -68,6 +68,24 @@ class NavidromeService:
         raw_albums: list[dict] = data.get("albumList2", {}).get("album", [])
         return [Album.model_validate(a) for a in raw_albums]
 
+    async def get_newest_albums(self, size: int = 20, offset: int = 0) -> list[Album]:
+        return await self.get_albums("newest", size=size, offset=offset)
+
+    async def get_frequent_albums(self, size: int = 20, offset: int = 0) -> list[Album]:
+        return await self.get_albums("frequent", size=size, offset=offset)
+
+    async def get_starred_albums(self, size: int = 20, offset: int = 0) -> list[Album]:
+        return await self.get_albums("starred", size=size, offset=offset)
+
+    async def get_recent_albums(self, size: int = 20, offset: int = 0) -> list[Album]:
+        return await self.get_albums("recent", size=size, offset=offset)
+
+    async def get_random_albums(self, size: int = 20) -> list[Album]:
+        return await self.get_albums("random", size=size)
+
+    async def get_top_rated_albums(self, size: int = 20, offset: int = 0) -> list[Album]:
+        return await self.get_albums("highest", size=size, offset=offset)
+
     async def get_songs(self, album_id: str) -> list[Song]:
         data = await self.client.request(
             "getAlbum",
