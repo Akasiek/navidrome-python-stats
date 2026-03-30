@@ -17,16 +17,21 @@ const isAtStart = ref(true)
 const isAtEnd = ref(false)
 
 function updateScrollState() {
-  if (!scrollContainer.value) return
-  const { scrollLeft, scrollWidth, clientWidth } = scrollContainer.value
+  const container = scrollContainer.value
+  if (!container) {
+    return
+  }
+  const { scrollLeft, scrollWidth, clientWidth } = container
   isAtStart.value = scrollLeft <= 1
   isAtEnd.value = scrollLeft + clientWidth >= scrollWidth - 1
 }
 
 function scroll(direction: 'left' | 'right') {
-  if (!scrollContainer.value) return
-
   const container = scrollContainer.value
+  if (!container) {
+    return
+  }
+
   const scrollAmount = container.clientWidth * 0.8
   const targetScroll = container.scrollLeft + (direction === 'right' ? scrollAmount : -scrollAmount)
 
