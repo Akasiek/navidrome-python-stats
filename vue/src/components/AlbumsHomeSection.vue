@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { Album, AlbumsResponse } from '@/types'
-import { onMounted, ref } from "vue";
-import { api } from "@/services/api.ts";
-import AlbumSection from "@/components/AlbumSection.vue";
+import { onMounted, ref } from 'vue'
+import { api } from '@/services/api.ts'
+import AlbumSection from '@/components/AlbumSection.vue'
 
 const newestAlbums = ref<Album[]>([])
 const frequentAlbums = ref<Album[]>([])
@@ -28,7 +28,7 @@ const sections: AlbumSectionConfig[] = [
 const loadAllAlbums = async () => {
   loading.value = true
   try {
-    const results = await Promise.all(sections.map(s => s.fetch(20)))
+    const results = await Promise.all(sections.map((s) => s.fetch(20)))
     results.forEach((res, index) => {
       const section = sections[index]
       if (section && section.data) {

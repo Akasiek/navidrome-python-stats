@@ -41,9 +41,7 @@ export const api = {
   getTopRatedAlbums: (size = 20, offset = 0) =>
     request<AlbumsResponse>(`/albums/top-rated?size=${size}&offset=${offset}`),
 
-  getAlbumSongs: (albumId: string) =>
-    request<SongsResponse>(`/albums/${albumId}/songs`),
+  getAlbumSongs: (albumId: string) => request<SongsResponse>(`/albums/${albumId}/songs`),
 
   getStats: () => request<LibraryStats>('/stats'),
 }
-

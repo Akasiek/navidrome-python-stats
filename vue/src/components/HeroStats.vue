@@ -26,7 +26,12 @@ interface StatCard {
 const primaryCards: StatCard[] = [
   { label: 'Songs', key: 'song_count', badgeKey: 'starred_song_count', badgeLabel: 'starred' },
   { label: 'Albums', key: 'album_count', badgeKey: 'starred_album_count', badgeLabel: 'starred' },
-  { label: 'Artists', key: 'artist_count', badgeKey: 'starred_artist_count', badgeLabel: 'starred' },
+  {
+    label: 'Artists',
+    key: 'artist_count',
+    badgeKey: 'starred_artist_count',
+    badgeLabel: 'starred',
+  },
 ]
 
 const secondaryCards: StatCard[] = [
@@ -38,8 +43,8 @@ const secondaryCards: StatCard[] = [
 
 <template>
   <section>
-    <h1 class="text-4xl font-bold text-white mb-2">Navidrome Python Stats</h1>
-    <p class="text-zinc-400 mb-8">An overview of your Navidrome collection</p>
+    <h1 class="text-4xl font-bold text-white mb-2 font-serif">Navidrome Python Stats</h1>
+    <p class="text-zinc-400 mb-8 font-sans">An overview of your Navidrome collection</p>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
       <div
         v-for="card in primaryCards"
@@ -47,8 +52,8 @@ const secondaryCards: StatCard[] = [
         class="bg-zinc-800 rounded-md p-7 flex flex-col gap-1"
       >
         <p class="text-zinc-400 text-sm font-medium">{{ card.label }}</p>
-        <p v-if="loading" class="h-10 w-24 bg-zinc-700 rounded animate-pulse mt-1"/>
-        <p v-else class="text-5xl font-bold text-white">
+        <p v-if="loading" class="h-10 w-24 bg-zinc-700 rounded animate-pulse mt-1" />
+        <p v-else class="text-5xl font-bold text-white font-serif">
           {{ stats ? stats[card.key].toLocaleString() : '—' }}
         </p>
 
@@ -74,7 +79,6 @@ const secondaryCards: StatCard[] = [
             </template>
           </template>
         </div>
-
       </div>
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -84,8 +88,8 @@ const secondaryCards: StatCard[] = [
         class="bg-zinc-800 rounded-md p-5 flex flex-col gap-1"
       >
         <span class="text-zinc-400 text-sm font-medium">{{ card.label }}</span>
-        <span v-if="loading" class="h-8 w-20 bg-zinc-700 rounded animate-pulse mt-1"/>
-        <span v-else class="text-3xl font-bold text-white">
+        <span v-if="loading" class="h-8 w-20 bg-zinc-700 rounded animate-pulse mt-1" />
+        <span v-else class="text-3xl font-bold text-white font-serif">
           {{ stats ? stats[card.key].toLocaleString() : '—' }}
         </span>
       </div>

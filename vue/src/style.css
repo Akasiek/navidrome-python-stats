@@ -1,1 +1,7 @@
 @import 'tailwindcss';
+
+@theme {
+  --font-serif: 'Gloock', serif;
+  --font-sans:
+    'Inter', ui-sans-serif, system-ui, sans-serif;
+}

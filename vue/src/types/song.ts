@@ -9,4 +9,3 @@ export interface Song {
   duration?: number
   coverArt?: string
 }
-

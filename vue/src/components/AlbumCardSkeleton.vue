@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineProps<{
   widthClass: string
-}>();
+}>()
 </script>
 
 <template>

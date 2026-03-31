@@ -3,4 +3,3 @@ export interface Artist {
   name: string
   albumCount: number
 }
-

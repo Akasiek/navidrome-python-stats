@@ -56,11 +56,7 @@ onUnmounted(() => {
 
 <template>
   <div class="relative group/carousel">
-    <CarouselButton
-      direction="left"
-      :hidden="isAtStart"
-      @click="scroll('left')"
-    />
+    <CarouselButton direction="left" :hidden="isAtStart" @click="scroll('left')" />
 
     <div
       ref="scrollContainer"
@@ -68,11 +64,7 @@ onUnmounted(() => {
       style="scrollbar-width: none; -ms-overflow-style: none"
     >
       <template v-if="loading">
-        <AlbumCardSkeleton
-          v-for="i in 6"
-          :key="`loading-${i}`"
-          width-class="w-56"
-        />
+        <AlbumCardSkeleton v-for="i in 6" :key="`loading-${i}`" width-class="w-56" />
       </template>
       <template v-else>
         <AlbumCard
@@ -88,11 +80,7 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <CarouselButton
-      direction="right"
-      :hidden="isAtEnd"
-      @click="scroll('right')"
-    />
+    <CarouselButton direction="right" :hidden="isAtEnd" @click="scroll('right')" />
   </div>
 </template>
 
@@ -101,5 +89,3 @@ onUnmounted(() => {
   display: none;
 }
 </style>
-
-
