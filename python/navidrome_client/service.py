@@ -108,12 +108,14 @@ class NavidromeService:
         song_count = await self._get_total_count("song")
         playlist_count = await self._get_total_count("playlist")
 
-        genres_data, radio_data = await asyncio.gather(
+        genres_data, radio_data, users_data = await asyncio.gather(
             self.client.request("getGenres"),
             self.client.request("getInternetRadioStations"),
+            self.client.request("getUsers"),
         )
         genre_count = len(genres_data.get("genres", {}).get("genre", []))
         radio_station_count = len(radio_data.get("internetRadioStations", {}).get("internetRadioStation", []))
+        user_count = len(users_data.get("users", {}).get("user", []))
 
         starred_data = await self.client.request("getStarred2")
         starred = starred_data.get("starred2", {})
@@ -138,6 +140,7 @@ class NavidromeService:
             starred_song_count=starred_song_count,
             starred_artist_count=starred_artist_count,
             playlist_count=playlist_count,
+            user_count=user_count,
             genre_count=genre_count,
             radio_station_count=radio_station_count,
             format_counts=format_counts,

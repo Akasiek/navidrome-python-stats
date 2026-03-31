@@ -43,6 +43,7 @@ export interface LibraryStats {
   starred_song_count: number
   starred_artist_count: number
   playlist_count: number
+  user_count: number
   genre_count: number
   radio_station_count: number
   format_counts: Record<string, number>
