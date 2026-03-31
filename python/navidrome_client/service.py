@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Literal
 
+from web_server.models.stats import LibraryStats
 from .client import NavidromeClient
 from .config import NavidromeConfig
 from web_server.models.album import Album
@@ -87,6 +88,34 @@ class NavidromeService:
 
     async def get_top_rated_albums(self, size: int = 20, offset: int = 0) -> list[Album]:
         return await self.get_albums("highest", size=size, offset=offset)
+
+    async def _get_total_count(self, resource: str) -> int:
+        result = await self.client.request_api(resource, {"_start": 1, "_end": 2})
+        return int(result['headers']['x-total-count'])
+
+    async def get_library_stats(self) -> "LibraryStats":
+        from web_server.models.stats import LibraryStats
+
+        artist_count = await self._get_total_count("artist")
+        album_count = await self._get_total_count("album")
+        song_count = await self._get_total_count("song")
+        playlist_count = await self._get_total_count("playlist")
+
+        starred_data = await self.client.request("getStarred2")
+        starred = starred_data.get("starred2", {})
+        starred_artist_count = len(starred.get("artist", []))
+        starred_album_count = len(starred.get("album", []))
+        starred_song_count = len(starred.get("song", []))
+
+        return LibraryStats(
+            artist_count=artist_count,
+            album_count=album_count,
+            song_count=song_count,
+            starred_album_count=starred_album_count,
+            starred_song_count=starred_song_count,
+            starred_artist_count=starred_artist_count,
+            playlist_count=playlist_count,
+        )
 
     async def get_songs(self, album_id: str) -> list[Song]:
         data = await self.client.request(
