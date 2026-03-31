@@ -11,3 +11,6 @@ class LibraryStats(BaseModel):
     starred_song_count: int
     starred_artist_count: int
     playlist_count: int
+    genre_count: int
+    radio_station_count: int
+    format_counts: dict[str, int]

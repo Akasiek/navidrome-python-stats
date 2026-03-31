@@ -19,19 +19,20 @@ onMounted(async () => {
 interface StatCard {
   label: string
   key: keyof LibraryStats
+  badgeKey?: keyof LibraryStats
+  badgeLabel?: string
 }
 
 const primaryCards: StatCard[] = [
-  { label: 'Artists', key: 'artist_count' },
-  { label: 'Albums', key: 'album_count' },
-  { label: 'Songs', key: 'song_count' },
+  { label: 'Songs', key: 'song_count', badgeKey: 'starred_song_count', badgeLabel: 'starred' },
+  { label: 'Albums', key: 'album_count', badgeKey: 'starred_album_count', badgeLabel: 'starred' },
+  { label: 'Artists', key: 'artist_count', badgeKey: 'starred_artist_count', badgeLabel: 'starred' },
 ]
 
 const secondaryCards: StatCard[] = [
-  { label: 'Starred Artists', key: 'starred_artist_count' },
-  { label: 'Starred Albums', key: 'starred_album_count' },
-  { label: 'Starred Songs', key: 'starred_song_count' },
+  { label: 'Genres', key: 'genre_count' },
   { label: 'Playlists', key: 'playlist_count' },
+  { label: 'Radio Stations', key: 'radio_station_count' },
 ]
 </script>
 
@@ -39,20 +40,44 @@ const secondaryCards: StatCard[] = [
   <section>
     <h1 class="text-4xl font-bold text-white mb-2">Navidrome Python Stats</h1>
     <p class="text-zinc-400 mb-8">An overview of your Navidrome collection</p>
-    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
       <div
         v-for="card in primaryCards"
         :key="card.key"
         class="bg-zinc-800 rounded-md p-7 flex flex-col gap-1"
       >
-        <span class="text-zinc-400 text-sm font-medium">{{ card.label }}</span>
-        <span v-if="loading" class="h-10 w-24 bg-zinc-700 rounded animate-pulse mt-1"/>
-        <span v-else class="text-5xl font-bold text-white">
+        <p class="text-zinc-400 text-sm font-medium">{{ card.label }}</p>
+        <p v-if="loading" class="h-10 w-24 bg-zinc-700 rounded animate-pulse mt-1"/>
+        <p v-else class="text-5xl font-bold text-white">
           {{ stats ? stats[card.key].toLocaleString() : '—' }}
-        </span>
+        </p>
+
+        <div class="flex gap-2 mt-2 flex-wrap -mb-2">
+          <template v-if="loading">
+            <span class="h-5 w-20 bg-zinc-700 rounded-full animate-pulse" />
+          </template>
+          <template v-else-if="stats">
+            <span
+              v-if="card.badgeKey"
+              class="text-xs font-medium bg-zinc-700 text-zinc-300 rounded-full px-2 py-0.5"
+            >
+              ★ {{ (stats[card.badgeKey] as number).toLocaleString() }} {{ card.badgeLabel }}
+            </span>
+            <template v-if="card.key === 'song_count'">
+              <span
+                v-for="(count, format) in stats.format_counts"
+                :key="format"
+                class="text-xs font-medium bg-zinc-700 text-zinc-300 rounded-full px-2 py-0.5"
+              >
+                {{ String(format).toUpperCase() }} {{ count.toLocaleString() }}
+              </span>
+            </template>
+          </template>
+        </div>
+
       </div>
     </div>
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
       <div
         v-for="card in secondaryCards"
         :key="card.key"
