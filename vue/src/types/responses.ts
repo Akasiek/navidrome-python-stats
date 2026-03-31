@@ -18,6 +18,23 @@ export interface PingResponse {
   status: string
 }
 
+export interface GenreStat {
+  name: string
+  song_count: number
+  album_count: number
+}
+
+export interface DecadeStat {
+  decade: string
+  album_count: number
+}
+
+export interface InsightsData {
+  top_genres: GenreStat[]
+  albums_by_decade: DecadeStat[]
+  format_counts: Record<string, number>
+}
+
 export interface LibraryStats {
   artist_count: number
   album_count: number

@@ -43,8 +43,19 @@ const secondaryCards: StatCard[] = [
 
 <template>
   <section>
-    <h1 class="text-4xl font-bold text-white mb-2 font-serif">Navidrome Python Stats</h1>
-    <p class="text-zinc-400 mb-8 font-sans">An overview of your Navidrome collection</p>
+    <div class="flex items-start justify-between mb-8">
+      <div>
+        <h1 class="text-4xl font-bold text-white mb-2 font-serif">Navidrome Python Stats</h1>
+        <p class="text-zinc-400 font-sans">An overview of your Navidrome collection</p>
+      </div>
+      <RouterLink
+        to="/insights"
+        class="flex items-center gap-1 text-sm text-zinc-400 hover:text-white transition-colors mt-1 bg-zinc-800 px-4 py-2 rounded-md font-medium hover:bg-zinc-700"
+      >
+        Insights <span aria-hidden="true">→</span>
+      </RouterLink>
+    </div>
+
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
       <div
         v-for="card in primaryCards"
@@ -52,14 +63,14 @@ const secondaryCards: StatCard[] = [
         class="bg-zinc-800 rounded-md p-7 flex flex-col gap-1"
       >
         <p class="text-zinc-400 text-sm font-medium">{{ card.label }}</p>
-        <p v-if="loading" class="h-10 w-24 bg-zinc-700 rounded animate-pulse mt-1" />
+        <p v-if="loading" class="h-10 w-24 bg-zinc-700 rounded animate-pulse mt-1"/>
         <p v-else class="text-5xl font-bold text-white font-serif">
           {{ stats ? stats[card.key].toLocaleString() : '—' }}
         </p>
 
         <div class="flex gap-2 mt-2 flex-wrap -mb-2">
           <template v-if="loading">
-            <span class="h-5 w-20 bg-zinc-700 rounded-full animate-pulse" />
+            <span class="h-5 w-20 bg-zinc-700 rounded-full animate-pulse"/>
           </template>
           <template v-else-if="stats">
             <span
@@ -88,7 +99,7 @@ const secondaryCards: StatCard[] = [
         class="bg-zinc-800 rounded-md p-5 flex flex-col gap-1"
       >
         <span class="text-zinc-400 text-sm font-medium">{{ card.label }}</span>
-        <span v-if="loading" class="h-8 w-20 bg-zinc-700 rounded animate-pulse mt-1" />
+        <span v-if="loading" class="h-8 w-20 bg-zinc-700 rounded animate-pulse mt-1"/>
         <span v-else class="text-3xl font-bold text-white font-serif">
           {{ stats ? stats[card.key].toLocaleString() : '—' }}
         </span>

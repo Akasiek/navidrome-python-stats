@@ -6,6 +6,7 @@ import type {
   ArtistsResponse,
   PingResponse,
   LibraryStats,
+  InsightsData,
 } from '@/types'
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api'
@@ -44,4 +45,5 @@ export const api = {
   getAlbumSongs: (albumId: string) => request<SongsResponse>(`/albums/${albumId}/songs`),
 
   getStats: () => request<LibraryStats>('/stats'),
+  getInsights: () => request<InsightsData>('/insights'),
 }
