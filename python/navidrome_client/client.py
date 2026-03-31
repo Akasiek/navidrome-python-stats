@@ -14,6 +14,7 @@ class NavidromeClient:
     def __init__(self, config: NavidromeConfig) -> None:
         self.config = config
         self.http: httpx.AsyncClient | None = None
+        self.api_token: str | None = None
 
     async def open(self) -> None:
         self.http = httpx.AsyncClient(
@@ -60,9 +61,6 @@ class NavidromeClient:
         response.raise_for_status()
 
         body: dict[str, Any] = response.json()
-        # TODO
-        # TODO check what we got
-        # TODO
         subsonic = body.get("subsonic-response", {})
 
         if subsonic.get("status") != "ok":
@@ -73,3 +71,47 @@ class NavidromeClient:
             )
 
         return subsonic
+
+    async def request_api(
+        self,
+        method_name: str,
+        extra_params: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        if self.http is None:
+            raise RuntimeError("NavidromeClient is not open")
+
+        headers = {"X-ND-Authorization": f"Bearer {self.get_api_token()}"}
+        params = {}
+        if extra_params:
+            params.update(extra_params)
+
+        response = await self.http.get(f"/api/{method_name}", headers=headers, params=params)
+        response.raise_for_status()
+
+        body = response.json()
+        headers = response.headers
+
+        return {
+            "body": body,
+            "headers": headers,
+        }
+
+    def get_api_token(self) -> str:
+        if self.api_token is not None:
+            return self.api_token
+        payload = {
+            "username": self.config.user,
+            "password": self.config.password,
+        }
+        response = httpx.post(f"{self.config.url}/auth/login", json=payload, timeout=10.0)
+        response.raise_for_status()
+        data = response.json()
+        token = data.get("token")
+        if not token:
+            raise NavidromeError(code=-1, message="Failed to retrieve API token")
+        self.api_token = token
+        return token
+
+    def refresh_api_token(self) -> str:
+        self.api_token = None
+        return self.get_api_token()
