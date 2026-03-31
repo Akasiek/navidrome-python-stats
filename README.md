@@ -1,5 +1,7 @@
 # Navidrome Python Statistics
 
+![App Screenshot](assets/screenshot.webp)
+
 ## Python
 
 ### Setup
