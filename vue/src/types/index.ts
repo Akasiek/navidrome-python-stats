@@ -6,5 +6,6 @@ export {
   type SongsResponse,
   type ArtistsResponse,
   type PingResponse,
+  type LibraryStats,
 } from './responses'
 

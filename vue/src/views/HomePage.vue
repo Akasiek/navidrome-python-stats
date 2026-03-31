@@ -2,7 +2,8 @@
 import { ref, onMounted } from 'vue'
 import { api } from '@/services/api'
 import type { Album, AlbumsResponse } from '@/types'
-import AlbumSection from "@/components/AlbumSection.vue";
+import AlbumSection from "@/components/AlbumSection.vue"
+import HeroStats from "@/components/HeroStats.vue"
 
 const newestAlbums = ref<Album[]>([])
 const frequentAlbums = ref<Album[]>([])
@@ -50,6 +51,7 @@ onMounted(() => {
 <template>
   <div class="bg-zinc-900 min-h-screen w-full text-white">
     <main class="container mx-auto py-12 px-4 space-y-12">
+      <HeroStats/>
       <AlbumSection
         v-for="section in sections"
         :key="section.title"

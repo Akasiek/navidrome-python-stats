@@ -18,3 +18,13 @@ export interface PingResponse {
   status: string
 }
 
+export interface LibraryStats {
+  artist_count: number
+  album_count: number
+  song_count: number
+  starred_album_count: number
+  starred_song_count: number
+  starred_artist_count: number
+  playlist_count: number
+}
+
