@@ -143,6 +143,65 @@ class NavidromeService:
             format_counts=format_counts,
         )
 
+    async def _get_top_genres(self, limit: int = 15) -> list["GenreStat"]:
+        from web_server.models.insights import GenreStat
+
+        data = await self.client.request("getGenres")
+        raw_genres = data.get("genres", {}).get("genre", [])
+        genres = [
+            GenreStat(name=g["value"], song_count=g.get("songCount", 0), album_count=g.get("albumCount", 0))
+            for g in raw_genres
+        ]
+        return sorted(genres, key=lambda g: g.song_count, reverse=True)[:limit]
+
+    _DECADES = [
+        ("1960s", 1960, 1969), ("1970s", 1970, 1979), ("1980s", 1980, 1989),
+        ("1990s", 1990, 1999), ("2000s", 2000, 2009), ("2010s", 2010, 2019),
+        ("2020s", 2020, 2029),
+    ]
+
+    async def _get_albums_by_decade(self) -> list["DecadeStat"]:
+        from web_server.models.insights import DecadeStat
+
+        decade_counts: dict[int, int] = {}
+        offset = 0
+        page_size = 500
+
+        while True:
+            result = await self.client.request_api("album", {"_start": offset, "_end": offset + page_size})
+            batch: list[dict] = result["body"]
+            for album in batch:
+                year = album.get("maxYear") or album.get("year") or 0
+                if year > 0:
+                    decade_start = (year // 10) * 10
+                    decade_counts[decade_start] = decade_counts.get(decade_start, 0) + 1
+            if len(batch) < page_size:
+                break
+            offset += page_size
+
+        return [
+            DecadeStat(decade=label, album_count=decade_counts.get(decade_start, 0))
+            for label, decade_start, _ in self._DECADES
+            if decade_counts.get(decade_start, 0) > 0
+        ]
+
+    async def _get_format_counts(self) -> dict[str, int]:
+        counts = await asyncio.gather(
+            *[self._get_total_count("song", {"suffix": fmt}) for fmt in self._AUDIO_FORMATS]
+        )
+        return {fmt: count for fmt, count in zip(self._AUDIO_FORMATS, counts) if count > 0}
+
+    async def get_insights(self) -> "InsightsData":
+        from web_server.models.insights import InsightsData
+
+        top_genres, albums_by_decade, format_counts = await asyncio.gather(
+            self._get_top_genres(),
+            self._get_albums_by_decade(),
+            self._get_format_counts(),
+        )
+
+        return InsightsData(top_genres=top_genres, albums_by_decade=albums_by_decade, format_counts=format_counts)
+
     async def get_songs(self, album_id: str) -> list[Song]:
         data = await self.client.request(
             "getAlbum",
