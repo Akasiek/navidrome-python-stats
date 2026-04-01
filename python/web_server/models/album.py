@@ -54,7 +54,7 @@ class AlbumResponse(BaseModel):
     @classmethod
     def get_cover_art_url(cls, album: Album, service: NavidromeDep) -> str | None:
         if album.cover_art:
-            return service.client.build_navidrome_url("getCoverArt", extra_params={"id": album.cover_art})
+            return f"/api/albums/cover/{album.cover_art}"
         return None
 
     @classmethod

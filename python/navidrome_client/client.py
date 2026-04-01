@@ -73,6 +73,16 @@ class NavidromeClient:
 
         return subsonic
 
+    async def fetch_cover_art(self, cover_id: str) -> tuple[bytes, str]:
+        if self.http is None:
+            raise RuntimeError("NavidromeClient is not open")
+        params = build_auth_params(self.config)
+        params["id"] = cover_id
+        response = await self.http.get("/rest/getCoverArt", params=params)
+        response.raise_for_status()
+        content_type = response.headers.get("content-type", "image/jpeg")
+        return response.content, content_type
+
     async def request_api(
         self,
         method_name: str,

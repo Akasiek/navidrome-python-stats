@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Query
+from fastapi.responses import Response
 
 from web_server.dependencies import NavidromeDep
 from web_server.models.album import AlbumListResponse, AlbumResponse
@@ -63,4 +64,14 @@ async def get_top_rated_albums(
 async def get_album_songs(album_id: str, service: NavidromeDep):
     songs = await service.get_songs(album_id)
     return {"songs": [s.model_dump() for s in songs]}
+
+
+@router.get("/cover/{cover_id}", summary="Album cover art")
+async def get_cover_art(cover_id: str, service: NavidromeDep):
+    data, content_type = await service.client.fetch_cover_art(cover_id)
+    return Response(
+        content=data,
+        media_type=content_type,
+        headers={"Cache-Control": "public, max-age=86400"},
+    )
 
