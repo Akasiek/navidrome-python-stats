@@ -9,7 +9,7 @@ const props = defineProps<{
   formatCounts: Record<string, number>
 }>()
 
-const COLORS = ['#6366f1', '#8b5cf6', '#a78bfa', '#c4b5fd', '#ddd6fe', '#ede9fe', '#f5f3ff']
+const COLORS = ['#6366f1', '#f59e0b', '#10b981', '#ef4444', '#3b82f6', '#f97316', '#14b8a6']
 
 const chartData = computed(() => {
   const entries = Object.entries(props.formatCounts)
