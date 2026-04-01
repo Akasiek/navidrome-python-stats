@@ -4,7 +4,7 @@ import asyncio
 import json
 from typing import Literal
 
-from web_server.models.stats import LibraryStats
+from web_server.models.statistics import LibraryStats
 from .client import NavidromeClient
 from .config import NavidromeConfig
 from web_server.models.album import Album
@@ -101,7 +101,7 @@ class NavidromeService:
         return int(result['headers']['x-total-count'])
 
     async def get_library_stats(self) -> "LibraryStats":
-        from web_server.models.stats import LibraryStats
+        from web_server.models.statistics import LibraryStats
 
         artist_count = await self._get_total_count("artist")
         album_count = await self._get_total_count("album")
@@ -147,7 +147,7 @@ class NavidromeService:
         )
 
     async def _get_top_genres(self, limit: int = 15) -> list["GenreStat"]:
-        from web_server.models.insights import GenreStat
+        from web_server.models.statistics import GenreStat
 
         data = await self.client.request("getGenres")
         raw_genres = data.get("genres", {}).get("genre", [])
@@ -164,7 +164,7 @@ class NavidromeService:
     ]
 
     async def _get_albums_by_decade(self) -> list["DecadeStat"]:
-        from web_server.models.insights import DecadeStat
+        from web_server.models.statistics import DecadeStat
 
         decade_counts: dict[int, int] = {}
         offset = 0
@@ -195,7 +195,7 @@ class NavidromeService:
         return {fmt: count for fmt, count in zip(self._AUDIO_FORMATS, counts) if count > 0}
 
     async def get_insights(self) -> "InsightsData":
-        from web_server.models.insights import InsightsData
+        from web_server.models.statistics import InsightsData
 
         top_genres, albums_by_decade, format_counts = await asyncio.gather(
             self._get_top_genres(),

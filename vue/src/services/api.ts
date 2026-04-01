@@ -44,6 +44,6 @@ export const api = {
 
   getAlbumSongs: (albumId: string) => request<SongsResponse>(`/albums/${albumId}/songs`),
 
-  getStats: () => request<LibraryStats>('/stats'),
-  getInsights: () => request<InsightsData>('/insights'),
+  getStats: () => request<LibraryStats>('/statistics'),
+  getInsights: () => request<InsightsData>('/statistics/insights'),
 }
