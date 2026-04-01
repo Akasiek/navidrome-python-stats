@@ -1,10 +1,20 @@
 from __future__ import annotations
 
 import asyncio
+from typing import TYPE_CHECKING
+
+from web_server.models.statistics import LibraryStats
+
+if TYPE_CHECKING:
+    from .client import NavidromeClient
 
 
 class LibraryMixin:
+    client: NavidromeClient
     _AUDIO_FORMATS = ["flac", "opus", "mp3", "ogg", "m4a", "aac", "wav", "aiff", "wv", "ape"]
+
+    async def _scan_all_albums_raw(self) -> list[dict]:
+        raise NotImplementedError
 
     async def _get_total_count(self, resource: str, filter: dict | None = None) -> int:
         params: dict = {"_start": 1, "_end": 2}
@@ -36,14 +46,17 @@ class LibraryMixin:
         starred_album_count = len(starred.get("album", []))
         starred_song_count = len(starred.get("song", []))
 
-        format_counts_raw = await asyncio.gather(
-            *[self._get_total_count("song", {"suffix": fmt}) for fmt in self._AUDIO_FORMATS]
+        format_counts_raw, all_albums = await asyncio.gather(
+            asyncio.gather(*[self._get_total_count("song", {"suffix": fmt}) for fmt in self._AUDIO_FORMATS]),
+            self._scan_all_albums_raw(),
         )
         format_counts = {
             fmt: count
             for fmt, count in zip(self._AUDIO_FORMATS, format_counts_raw)
             if count > 0
         }
+        total_seconds = int(sum(a.get("duration", 0) for a in all_albums))
+        avg_album_seconds = total_seconds // len(all_albums) if all_albums else 0
 
         return LibraryStats(
             artist_count=artist_count,
@@ -57,6 +70,8 @@ class LibraryMixin:
             genre_count=genre_count,
             radio_station_count=radio_station_count,
             format_counts=format_counts,
+            total_seconds=total_seconds,
+            avg_album_seconds=avg_album_seconds,
         )
 
     async def get_format_counts(self) -> dict[str, int]:

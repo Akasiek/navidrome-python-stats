@@ -10,7 +10,6 @@ import type {
   DecadeStat,
   ChartData,
   NeverPlayedData,
-  LibraryDurationData,
 } from '@/types'
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api'
@@ -56,7 +55,6 @@ export const api = {
   getArtistDominance: () => request<ChartData>('/statistics/insights/artist-dominance'),
   getLongestAlbums: () => request<ChartData>('/statistics/insights/longest-albums'),
   getMostPlayedArtists: () => request<ChartData>('/statistics/insights/most-played-artists'),
-  getLibraryDuration: () => request<LibraryDurationData>('/statistics/insights/library-duration'),
   getNeverPlayed: () => request<NeverPlayedData>('/statistics/insights/never-played'),
   getTopPlayedSongs: () => request<ChartData>('/statistics/insights/top-played-songs'),
 }

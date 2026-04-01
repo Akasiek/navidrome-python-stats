@@ -15,6 +15,8 @@ class LibraryStats(BaseModel):
     genre_count: int
     radio_station_count: int
     format_counts: dict[str, int]
+    total_seconds: int
+    avg_album_seconds: int
 
 
 class GenreStat(BaseModel):
@@ -39,7 +41,3 @@ class NeverPlayedData(BaseModel):
     songs_played: int
     songs_never_played: int
 
-
-class LibraryDurationData(BaseModel):
-    total_seconds: int
-    avg_album_seconds: int

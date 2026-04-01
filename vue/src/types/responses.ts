@@ -41,11 +41,6 @@ export interface NeverPlayedData {
   songs_never_played: number
 }
 
-export interface LibraryDurationData {
-  total_seconds: number
-  avg_album_seconds: number
-}
-
 export interface LibraryStats {
   artist_count: number
   album_count: number
@@ -58,4 +53,6 @@ export interface LibraryStats {
   genre_count: number
   radio_station_count: number
   format_counts: Record<string, number>
+  total_seconds: number
+  avg_album_seconds: number
 }

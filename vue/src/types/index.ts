@@ -11,5 +11,4 @@ export {
   type DecadeStat,
   type ChartData,
   type NeverPlayedData,
-  type LibraryDurationData,
 } from './responses'

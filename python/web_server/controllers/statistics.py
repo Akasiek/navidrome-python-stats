@@ -5,7 +5,6 @@ from web_server.models.statistics import (
     ChartData,
     DecadeStat,
     GenreStat,
-    LibraryDurationData,
     LibraryStats,
     NeverPlayedData,
 )
@@ -54,12 +53,6 @@ async def get_longest_albums(service: NavidromeDep):
             summary="Most played artists by total play count")
 async def get_most_played_artists(service: NavidromeDep):
     return await service.get_most_played_artists()
-
-
-@router.get("/insights/library-duration", response_model=LibraryDurationData,
-            summary="Total and average library duration")
-async def get_library_duration(service: NavidromeDep):
-    return await service.get_library_duration()
 
 
 @router.get("/insights/never-played", response_model=NeverPlayedData,

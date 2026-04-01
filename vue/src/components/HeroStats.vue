@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { api } from '@/services/api'
 import type { LibraryStats } from '@/types'
 
@@ -15,6 +15,19 @@ onMounted(async () => {
     loading.value = false
   }
 })
+
+function formatDuration(seconds: number): string {
+  const days = Math.floor(seconds / 86400)
+  const hours = Math.floor((seconds % 86400) / 3600)
+  const minutes = Math.floor((seconds % 3600) / 60)
+  if (days > 0) return `${days}d ${hours}h`
+  if (hours > 0) return `${hours}h ${minutes}m`
+  return `${minutes}m`
+}
+
+const totalDuration = computed(() =>
+  stats.value ? formatDuration(stats.value.total_seconds) : null,
+)
 
 interface StatCard {
   label: string
@@ -93,7 +106,7 @@ const secondaryCards: StatCard[] = [
         </div>
       </div>
     </div>
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
       <div
         v-for="card in secondaryCards"
         :key="card.key"
@@ -104,6 +117,11 @@ const secondaryCards: StatCard[] = [
         <span v-else class="text-3xl font-bold text-white font-serif">
           {{ stats ? stats[card.key].toLocaleString() : '—' }}
         </span>
+      </div>
+      <div class="bg-zinc-800 rounded-md p-5 flex flex-col gap-1">
+        <span class="text-zinc-400 text-sm font-medium">Total Duration</span>
+        <span v-if="!totalDuration" class="h-8 w-20 bg-zinc-700 rounded animate-pulse mt-1"/>
+        <span v-else class="text-3xl font-bold text-white font-serif">{{ totalDuration }}</span>
       </div>
     </div>
   </section>

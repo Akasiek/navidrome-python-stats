@@ -1,9 +1,20 @@
 from __future__ import annotations
 
 import asyncio
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .client import NavidromeClient
 
 
 class InsightsMixin:
+    client: NavidromeClient
+
+    async def _scan_all_albums_raw(self) -> list[dict]:
+        raise NotImplementedError
+
+    async def _scan_all_songs_raw(self) -> list[dict]:
+        raise NotImplementedError
     _DECADES = [
         ("1960s", 1960, 1969), ("1970s", 1970, 1979), ("1980s", 1980, 1989),
         ("1990s", 1990, 1999), ("2000s", 2000, 2009), ("2010s", 2010, 2019),
@@ -88,14 +99,6 @@ class InsightsMixin:
             labels=[name for name, _ in top],
             values=[count for _, count in top],
         )
-
-    async def get_library_duration(self) -> "LibraryDurationData":
-        from web_server.models.statistics import LibraryDurationData
-
-        all_albums = await self._scan_all_albums_raw()
-        total_seconds = int(sum(a.get("duration", 0) for a in all_albums))
-        avg = total_seconds // len(all_albums) if all_albums else 0
-        return LibraryDurationData(total_seconds=total_seconds, avg_album_seconds=avg)
 
     async def get_never_played(self) -> "NeverPlayedData":
         from web_server.models.statistics import NeverPlayedData
