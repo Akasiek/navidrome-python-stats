@@ -29,10 +29,21 @@ export interface DecadeStat {
   album_count: number
 }
 
-export interface InsightsData {
-  top_genres: GenreStat[]
-  albums_by_decade: DecadeStat[]
-  format_counts: Record<string, number>
+export interface ChartData {
+  labels: string[]
+  values: number[]
+}
+
+export interface NeverPlayedData {
+  albums_played: number
+  albums_never_played: number
+  songs_played: number
+  songs_never_played: number
+}
+
+export interface LibraryDurationData {
+  total_seconds: number
+  avg_album_seconds: number
 }
 
 export interface LibraryStats {

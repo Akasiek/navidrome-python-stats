@@ -6,7 +6,11 @@ import type {
   ArtistsResponse,
   PingResponse,
   LibraryStats,
-  InsightsData,
+  GenreStat,
+  DecadeStat,
+  ChartData,
+  NeverPlayedData,
+  LibraryDurationData,
 } from '@/types'
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api'
@@ -45,5 +49,14 @@ export const api = {
   getAlbumSongs: (albumId: string) => request<SongsResponse>(`/albums/${albumId}/songs`),
 
   getStats: () => request<LibraryStats>('/statistics'),
-  getInsights: () => request<InsightsData>('/statistics/insights'),
+  getTopGenres: () => request<GenreStat[]>('/statistics/insights/top-genres'),
+  getAlbumsByDecade: () => request<DecadeStat[]>('/statistics/insights/albums-by-decade'),
+  getFormatCounts: () => request<Record<string, number>>('/statistics/insights/format-counts'),
+  getMostProlificArtists: () => request<ChartData>('/statistics/insights/most-prolific-artists'),
+  getArtistDominance: () => request<ChartData>('/statistics/insights/artist-dominance'),
+  getLongestAlbums: () => request<ChartData>('/statistics/insights/longest-albums'),
+  getMostPlayedArtists: () => request<ChartData>('/statistics/insights/most-played-artists'),
+  getLibraryDuration: () => request<LibraryDurationData>('/statistics/insights/library-duration'),
+  getNeverPlayed: () => request<NeverPlayedData>('/statistics/insights/never-played'),
+  getTopPlayedSongs: () => request<ChartData>('/statistics/insights/top-played-songs'),
 }

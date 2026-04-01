@@ -7,7 +7,9 @@ export {
   type ArtistsResponse,
   type PingResponse,
   type LibraryStats,
-  type InsightsData,
   type GenreStat,
   type DecadeStat,
+  type ChartData,
+  type NeverPlayedData,
+  type LibraryDurationData,
 } from './responses'
