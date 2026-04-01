@@ -39,7 +39,8 @@ class NavidromeClient:
         if extra_params:
             params.update(extra_params)
 
-        url = self.config.url.rstrip("/") + ("/rest" if is_rest else "/app/#")
+        base = (self.config.external_url or self.config.url).rstrip("/")
+        url = base + ("/rest" if is_rest else "/app/#")
         url = f"{url}/{endpoint}"
         if params:
             url += "?" + urlencode(params)

@@ -10,6 +10,7 @@ class NavidromeConfig(BaseSettings):
     )
 
     url: str
+    external_url: str | None = None
     user: str
     password: str
 
