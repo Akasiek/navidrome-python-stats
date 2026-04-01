@@ -28,7 +28,18 @@ class DecadeStat(BaseModel):
     album_count: int
 
 
-class InsightsData(BaseModel):
-    top_genres: list[GenreStat]
-    albums_by_decade: list[DecadeStat]
-    format_counts: dict[str, int]
+class ChartData(BaseModel):
+    labels: list[str]
+    values: list[int]
+
+
+class NeverPlayedData(BaseModel):
+    albums_played: int
+    albums_never_played: int
+    songs_played: int
+    songs_never_played: int
+
+
+class LibraryDurationData(BaseModel):
+    total_seconds: int
+    avg_album_seconds: int
