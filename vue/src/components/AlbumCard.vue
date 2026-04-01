@@ -7,7 +7,6 @@ import IconPlay from '@/components/icons/IconPlay.vue'
 const props = defineProps<{
   album: Album
 }>()
-console.log(props.album)
 const formatDuration = (seconds?: number) => {
   if (!seconds) return ''
   const minutes = Math.floor(seconds / 60)
