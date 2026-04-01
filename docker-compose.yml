@@ -1,0 +1,10 @@
+services:
+  app:
+    build: .
+    ports:
+      - "80:80"
+    environment:
+      NAVIDROME_URL: ${NAVIDROME_URL}
+      NAVIDROME_USER: ${NAVIDROME_USER}
+      NAVIDROME_PASSWORD: ${NAVIDROME_PASSWORD}
+    restart: unless-stopped
