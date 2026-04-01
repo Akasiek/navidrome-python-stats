@@ -1,9 +1,15 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from web_server.models.song import Song
+
+if TYPE_CHECKING:
+    from .client import NavidromeClient
 
 
 class SongsMixin:
+    client: NavidromeClient
     async def get_songs(self, album_id: str) -> list[Song]:
         data = await self.client.request(
             "getAlbum",

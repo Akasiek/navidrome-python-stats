@@ -1,9 +1,15 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from web_server.models.artist import Artist
+
+if TYPE_CHECKING:
+    from .client import NavidromeClient
 
 
 class ArtistsMixin:
+    client: NavidromeClient
     async def get_artists(self) -> list[Artist]:
         data = await self.client.request("getArtists")
         raw_index: list[dict] = (

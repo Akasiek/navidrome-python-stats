@@ -1,8 +1,11 @@
 from __future__ import annotations
 
-from typing import Literal
+from typing import TYPE_CHECKING, Literal
 
 from web_server.models.album import Album
+
+if TYPE_CHECKING:
+    from .client import NavidromeClient
 
 AlbumListType = Literal[
     "random",
@@ -19,6 +22,7 @@ AlbumListType = Literal[
 
 
 class AlbumsMixin:
+    client: NavidromeClient
     async def _get_albums(
         self,
         list_type: AlbumListType = "alphabeticalByName",
